@@ -598,6 +598,7 @@
         <module>consistency</module>
         <module>auth</module>
         <module>sys</module>
+        <module>test-insight</module>
     </modules>
 
     <!-- 所有的子项目默认依赖 -->
