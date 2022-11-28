@@ -276,6 +276,7 @@ public class Service extends com.alibaba.nacos.api.naming.pojo.Service implement
         for (Map.Entry<String, List<Instance>> entry : ipMap.entrySet()) {
             //make every ip mine
             List<Instance> entryIPs = entry.getValue();
+            // 这里是真正的注册逻辑
             clusterMap.get(entry.getKey()).updateIps(entryIPs, ephemeral);
         }
 

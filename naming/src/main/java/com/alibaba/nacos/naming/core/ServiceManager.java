@@ -658,6 +658,7 @@ public class ServiceManager implements RecordListener<Service> {
             instances.setInstanceList(instanceList);
 
             // delegate
+            // com.alibaba.nacos.naming.consistency.DelegateConsistencyServiceImpl
             consistencyService.put(key, instances);
         }
     }
