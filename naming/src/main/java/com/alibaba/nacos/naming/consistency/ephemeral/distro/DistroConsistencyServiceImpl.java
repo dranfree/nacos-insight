@@ -106,6 +106,7 @@ public class DistroConsistencyServiceImpl implements EphemeralConsistencyService
     @Override
     public void put(String key, Record value) throws NacosException {
         onPut(key, value); // 将Instance丢到阻塞队列中去，异步注册。
+        // 同步实例信息到集群中其他节点
         distroProtocol.sync(new DistroKey(key, KeyBuilder.INSTANCE_LIST_KEY_PREFIX), DataOperation.CHANGE,
                 globalConfig.getTaskDispatchPeriod() / 2);
     }
@@ -142,7 +143,6 @@ public class DistroConsistencyServiceImpl implements EphemeralConsistencyService
         }
 
         // 添加到阻塞队列中
-        // TODO 添加到阻塞队列然后捏？
         notifier.addTask(key, DataOperation.CHANGE);
     }
 
