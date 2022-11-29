@@ -45,8 +45,8 @@ public class DelegateConsistencyServiceImpl implements ConsistencyService {
 
     @Override
     public void put(String key, Record value) throws NacosException {
-        // 临时实例(CP)：ephemeralConsistencyService，大部分情况下都是这个。
-        // 持久实例(AP)：persistentConsistencyService
+        // 临时实例(AP)：ephemeralConsistencyService，大部分情况下都是这个。
+        // 持久实例(CP)：persistentConsistencyService
         mapConsistencyService(key).put(key, value);
     }
 

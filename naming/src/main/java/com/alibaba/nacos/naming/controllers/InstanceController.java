@@ -352,10 +352,13 @@ public class InstanceController {
     }
 
     /**
+     * 服务发现：/nacos/v1/ns/instance/list
+     * <p>
      * Get all instance of input service.
      *
      * @param request http request
      * @return list of instance
+     * @see {com.alibaba.nacos.client.naming.NacosNamingService}
      * @throws Exception any error during list
      */
     @GetMapping("/list")
