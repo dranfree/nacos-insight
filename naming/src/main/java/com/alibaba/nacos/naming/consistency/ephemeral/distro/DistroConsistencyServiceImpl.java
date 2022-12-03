@@ -417,7 +417,9 @@ public class DistroConsistencyServiceImpl implements EphemeralConsistencyService
                     count++;
 
                     try {
+                        // 发布服务变化事件
                         if (action == DataOperation.CHANGE) {
+                            // Service
                             listener.onChange(datumKey, dataStore.get(datumKey).value);
                             continue;
                         }

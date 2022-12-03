@@ -502,6 +502,8 @@ public class ServiceManager implements RecordListener<Service> {
      */
     public void registerInstance(String namespaceId, String serviceName, Instance instance) throws NacosException {
 
+        // 1.初始化内存注册表结构
+        // 2.启动后台定时任务，检测心跳。
         createEmptyService(namespaceId, serviceName, instance.isEphemeral());
 
         Service service = getService(namespaceId, serviceName);
@@ -511,6 +513,7 @@ public class ServiceManager implements RecordListener<Service> {
                     "service not found, namespace: " + namespaceId + ", service: " + serviceName);
         }
 
+        // 将新注册的实例加入到对应服务的实例列表中去
         addInstance(namespaceId, serviceName, instance.isEphemeral(), instance);
     }
 
@@ -658,7 +661,10 @@ public class ServiceManager implements RecordListener<Service> {
             instances.setInstanceList(instanceList);
 
             // delegate
-            // com.alibaba.nacos.naming.consistency.DelegateConsistencyServiceImpl
+            // 此处实现是这个：DelegateConsistencyServiceImpl
+            // 内部会通过临时/永久来选择具体的实现类：
+            // 1.临时：EphemeralConsistencyService -> DistroConsistencyServiceImpl
+            // 2.永久：PersistentConsistencyServiceDelegateImpl
             consistencyService.put(key, instances);
         }
     }

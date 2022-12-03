@@ -177,7 +177,7 @@ public class PushService implements ApplicationContextAware, ApplicationListener
                 futureMap.remove(UtilsAndCommons.assembleFullServiceName(namespaceId, serviceName));
             }
 
-        }, 1000, TimeUnit.MILLISECONDS);
+        }, 1000, TimeUnit.MILLISECONDS); // TODO 为什么要延迟1秒再推送？
 
         futureMap.put(UtilsAndCommons.assembleFullServiceName(namespaceId, serviceName), future);
 

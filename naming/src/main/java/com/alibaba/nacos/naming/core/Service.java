@@ -276,11 +276,12 @@ public class Service extends com.alibaba.nacos.api.naming.pojo.Service implement
         for (Map.Entry<String, List<Instance>> entry : ipMap.entrySet()) {
             //make every ip mine
             List<Instance> entryIPs = entry.getValue();
-            // 这里是真正的注册逻辑
+            // 这里讲临时的注册实例更新到cluster的ephemeralInstances属性中去
             clusterMap.get(entry.getKey()).updateIps(entryIPs, ephemeral);
         }
 
         setLastModifiedMillis(System.currentTimeMillis());
+        // 发布服务变化事件，使用UDP方式推送通知给订阅的客户端。
         getPushService().serviceChanged(this);
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -297,6 +298,9 @@ public class Service extends com.alibaba.nacos.api.naming.pojo.Service implement
      * Init service.
      */
     public void init() {
+        // 定时检测已注册实例是否健康
+        // 如果某个实例超过15秒没有收到心跳，则将它的healthy属性设置为false；
+        // 如果某个实例超过30秒没有收到心跳，则会直接剔除该实例。被剔除的实例如果恢复心跳则会重新注册。
         HealthCheckReactor.scheduleCheck(clientBeatCheckTask);
         for (Map.Entry<String, Cluster> entry : clusterMap.entrySet()) {
             entry.getValue().setService(this);
